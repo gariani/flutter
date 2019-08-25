@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_gif/ui/gif_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:share/share.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,16 +12,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   String _search;
+
+  int _offset = 0;
 
   Future<Map> _getGifs() async {
     http.Response response;
     if (_search == null) {
       response = await http.get(
-          "https://api.giphy.com/v1/gifs/search?api_key=OOskEQdqSuiOyO1hpnHnZaODhaWXg9KV&&limit=25&rating=G");
+          "https://api.giphy.com/v1/gifs/trending?api_key=OOskEQdqSuiOyO1hpnHnZaODhaWXg9KV&limit=25&rating=G");
     } else {
       response = await http.get(
-          "https://api.giphy.com/v1/gifs/search?api_key=OOskEQdqSuiOyO1hpnHnZaODhaWXg9KV&q=$_search&limit=25&offset=0&rating=G&lang=en");
+          "https://api.giphy.com/v1/gifs/search?api_key=OOskEQdqSuiOyO1hpnHnZaODhaWXg9KV&q=$_search&limit=19&offset=$_offset&rating=G&lang=en");
     }
 
     return json.decode(response.body);
@@ -54,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                     border: OutlineInputBorder()),
                 style: TextStyle(color: Colors.white, fontSize: 10.0),
                 textAlign: TextAlign.center,
-                onSubmitted: (text){
+                onSubmitted: (text) async {
                   setState(() {
                     print(text);
                     _search = text;
@@ -83,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                       if (snapshot.hasError)
                         return Container();
                       else
-                        return _createGitTable(context, snapshot);
+                        return _createGifTable(context, snapshot);
                   }
                 },
               ),
@@ -92,20 +98,56 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  Widget _createGitTable(BuildContext context, AsyncSnapshot snapshot) {
+  int _getCount(List data) {
+    if (_search == null) {
+      return data.length;
+    } else {
+      return data.length + 1;
+    }
+  }
+
+  Widget _createGifTable(BuildContext context, AsyncSnapshot snapshot) {
     return GridView.builder(
       padding: EdgeInsets.all(10.0),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10.0),
-      itemCount: 4,
+      itemCount: _getCount(snapshot.data["data"]),
       itemBuilder: (conext, index) {
-        return GestureDetector(
-          child: Image.network(
-            snapshot.data["data"][index]["images"]["fixed_height"]["url"],
-            height: 300.0,
-            fit: BoxFit.cover,
-          ),
-        );
+        if (_search == null || index < snapshot.data["data"].length)
+          return GestureDetector(
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: snapshot.data["data"][index]["images"]["fixed_height"]["url"],
+              height: 300.0,
+              fit: BoxFit.cover,
+            ),
+            onTap: (){
+              Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => Gifpage(snapshot.data["data"][index])));
+            },
+            onLongPress: (){
+              Share.share(snapshot.data["data"][index]["images"]["fixed_height"]["url"]);
+            },
+          );
+          else
+           return Container(
+             child: GestureDetector(
+               child: Column(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 children: <Widget>[Icon(
+                   Icons.add, 
+                   color: Colors.white, 
+                   size: 70.0,),
+                   Text("Carregar mais...", style: TextStyle(color: Colors.white, fontSize: 22.0),)
+                   ],
+                  ),
+                  onTap: (){
+                    setState(() {
+                      _offset += 10;
+                    });
+                  },
+                ),
+           );
       },
     );
   }

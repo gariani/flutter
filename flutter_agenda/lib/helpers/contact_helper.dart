@@ -22,8 +22,6 @@ class ContactHelper {
       return _db;
     } else {
       _db = await initDb();
-
-      Contact c = Contact();
       return _db;
     }
   }

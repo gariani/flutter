@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "533240343951",
+    "firebase_url": "https://lojavirtual-b4c14.firebaseio.com",
+    "project_id": "lojavirtual-b4c14",
+    "storage_bucket": "lojavirtual-b4c14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533240343951:android:1eea97514828de5fbbaffa",
+        "android_client_info": {
+          "package_name": "br.com.gariani.lojavirtual"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533240343951-jdiup48i53qp9ueetl96hblib3pfk57r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVJAvf8cF_p7dv7M1aOnUR17HaTRIEURo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533240343951-jdiup48i53qp9ueetl96hblib3pfk57r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

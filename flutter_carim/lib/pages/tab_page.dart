@@ -1,3 +1,4 @@
+import 'package:carimbinho/core/models/contact.dart';
 import 'package:carimbinho/pages/list_page.dart';
 import 'package:carimbinho/pages/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,11 @@ import 'app_bar_page.dart';
 import 'map_page.dart';
 
 class TabPage extends StatefulWidget {
+
+  final Contact contact;
+
+  TabPage({this.contact});
+
   @override
   _TabPageState createState() => _TabPageState();
 }
@@ -22,7 +28,7 @@ class _TabPageState extends State<TabPage> {
             children: <Widget>[
               ListPage(),
               MapPage(),
-              ProfilePage(),
+              ProfilePage(contact: widget.contact),
             ],
           )),
     );

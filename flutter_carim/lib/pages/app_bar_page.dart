@@ -1,6 +1,6 @@
+import 'package:carimbinho/helpers/google_login.dart' as google;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:carimbinho/utils/google_login.dart' as google;
 
 import 'login_page.dart';
 

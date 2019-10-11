@@ -1,6 +1,11 @@
+import 'package:carimbinho/core/models/contact.dart';
+import 'package:carimbinho/core/viewmodels/CRUDModel.dart';
+import 'package:carimbinho/helpers/google_login.dart' as google;
+import 'package:carimbinho/helpers/google_login.dart';
 import 'package:carimbinho/pages/tab_page.dart';
-import 'package:carimbinho/utils/google_login.dart' as google;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../login_icons_icons.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,105 +23,90 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.only(top: 40.0),
         child: Stack(children: [
           Container(
-            alignment: Alignment.topCenter,
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  Image.asset('icon/stamp.jpg'),
-                  Text(
-                    'CARIMBINHO',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontFamily: 'Oswald',
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'J U N T O U   T R O C O U',
-                    style: TextStyle(fontSize: 10, color: Colors.red[900]),
-                  )
-                ],
-              ),
-            ),
-          ),
-          ListView(
-            children: <Widget>[
-              Center(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding: EdgeInsets.symmetric(vertical: 100.0),
-                      width: 305.0,
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          Text(
-                            'Fazer Login',
-                            style: TextStyle(
-                              color: Colors.grey[800],
-                              fontSize: 20.0,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          _loginButton('Conectar com o Google', Colors.red[800],
-                              LoginIcons.gplus, google.googleLogin),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          _loginButton(
-                              'Conectar com o Facebook',
-                              Colors.blue[900],
-                              LoginIcons.facebook_squared,
-                              () {}),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          const Text(
-                            '- ou -',
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                            width: 20.0,
-                          ),
-                          _internalForm(),
-                        ],
+            child: ListView(
+              children: <Widget>[
+                Center(          
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset('icon/stamp.jpg'),
+                      Text(
+                        'CARIMBINHO',
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontFamily: 'Oswald',
+                            fontWeight: FontWeight.bold),
                       ),
-                    )
-                  ],
+                      Text(
+                        'J U N T O U   T R O C O U',
+                        style: TextStyle(fontSize: 10, color: Colors.red[900]),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                Center(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.symmetric(vertical: 20.0), 
+                        width: 305.0,
+                        child: Column(
+                          children: <Widget>[
+                            const SizedBox(
+                              height: 40,
+                            ),
+                            Text(
+                              'Fazer Login',
+                              style: TextStyle(
+                                color: Colors.grey[800],
+                                fontSize: 20.0,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            _loginButton('Conectar com o Google',
+                                Colors.red[800], LoginIcons.gplus),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            _loginButton('Conectar com o Facebook',
+                                Colors.blue[900], LoginIcons.facebook_squared),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            const Text(
+                              '- ou -',
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                              width: 20.0,
+                            ),
+                            _internalForm(),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ]),
       ),
     );
   }
 
-  Widget _loginButton(
-      String label, Color color, IconData icon, google.Login login) {
+  Widget _loginButton(String label, Color color, IconData icon) {
     return FlatButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
       color: color,
-      onPressed: () {
-        login().then((value) {
-          if (value) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => TabPage()));
-          }
-        }, onError: (e) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
-        });
-      },
+      onPressed: _login,
       child: Row(
         children: <Widget>[
           Icon(
@@ -198,5 +188,37 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  void _login() async {
+    final result = await google.googleLogin();
+    if (!result) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
+    }
+
+    final contactProvider = Provider.of<CRUDModel>(context);
+    final contact = await contactProvider.getContactById(user.email);
+    DocumentSnapshot added;
+
+    if (contact == null) {
+      var year = DateTime.now();
+      Contact contact = Contact(
+          id: user.email,
+          email: user.email,
+          nome: user.displayName,
+          membroDesde: year.year.toString(),
+          codigoId: '2323');
+      added = await contactProvider.addContact(user.email, contact);
+      contact = Contact.fromJson(added.data);
+    }
+
+    if (contact != null) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => TabPage(contact: contact)));
+    } else {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
+    }
   }
 }

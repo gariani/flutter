@@ -1,50 +1,85 @@
-import 'dart:math';
-
-import 'package:carimbinho/utils/google_login.dart';
+import 'dart:io';
+import 'package:exif/exif.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:carimbinho/core/models/contact.dart';
+import 'package:carimbinho/pages/profile_edit_page.dart';
+import 'package:carimbinho/pages/qr_code_page.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
+  final Contact contact;
+
+  ProfilePage({this.contact});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Contact contact;
+  StorageReference storage;
+  @override
+  void initState() {
+    super.initState();
+    contact = widget.contact;
+    storage = FirebaseStorage.instance.ref().child(contact.email);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(children: <Widget>[
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            ButtonTheme.bar(
-              child: ButtonBar(
-                children: <Widget>[
-                  FlatButton(
-                    child: const Text(
-                      'Editar',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                    onPressed: () {},
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
         Container(
           width: 150.0,
           height: 150.0,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: user?.photoUrl != null
-                  ? NetworkImage(user.photoUrl)
-                  : NetworkImage(
-                      "https://cdn2.iconfinder.com/data/icons/solid-glyphs-volume-2/256/user-unisex-512.png"),
-              fit: BoxFit.cover,
-            ),
+          child: Column(
+            children: <Widget>[
+              GestureDetector(
+                  child: Container(
+                    width: 150.0,
+                    height: 150.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: contact.foto.isNotEmpty
+                            ? FileImage(File(contact.foto))
+                            : NetworkImage(
+                                "https://cdn2.iconfinder.com/data/icons/solid-glyphs-volume-2/256/user-unisex-512.png"),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    ImagePicker.pickImage(
+                            source: ImageSource.camera, imageQuality: 50)
+                        .then((file) {
+                      if (file == null) return;
+                      setState(() async {
+
+                        File newFile = await rotateAndCompressAndSaveImage(file);
+
+                        final StorageUploadTask upload = storage.putFile(
+                            File(newFile.path),
+                            StorageMetadata(
+                              contentType: 'image/jpg',
+                            ));
+
+                        await upload.onComplete;                        
+                          
+                          setState(() {
+                            contact.foto = newFile.path;
+                          });
+                      });
+                    });
+                  }),
+            ],
           ),
         ),
         Container(
@@ -53,38 +88,49 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(
                 height: 30,
               ),
-              Text(user.displayName,
-                  style: TextStyle(fontSize: 25.0, color: Colors.green[900])),
+              Text(contact.nome ?? "",
+                  style: TextStyle(
+                      fontSize: 45.0,
+                      color: Colors.green[900],
+                      fontWeight: FontWeight.bold)),
               const SizedBox(
                 height: 10,
               ),
-              Text('Membro desde ', style: TextStyle(color: Colors.green[900]),),
+              Text(
+                'Membro desde ${contact.membroDesde}',
+                style: TextStyle(color: Colors.green[900]),
+              ),
               const SizedBox(
                 height: 20,
               ),
               Text(
-                user.email,
+                contact.email ?? "",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20.0,
                     color: Colors.green[900]),
               ),
               const SizedBox(
-                height: 30,
+                height: 10,
               ),
-              Text(user.phoneNumber ?? ""),
+              Text(
+                contact.nomeCompleto ?? "",
+                style: TextStyle(fontSize: 15.0, color: Colors.green[900]),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                contact.fone ?? "",
+                style: TextStyle(color: Colors.green[900]),
+              ),
               const SizedBox(
                 height: 30,
               ),
             ],
           ),
         ),
-        Chip(
-          backgroundColor: Colors.green[900],
-          padding: EdgeInsets.all(0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-          label: Text('21313', style: TextStyle(color: Colors.white, fontSize: 45),),
-        ),
+        QrCodePage(data: contact.email),
         Expanded(
             flex: 1,
             child: Align(
@@ -123,7 +169,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   IconButton(
                     icon: Icon(FontAwesomeIcons.userEdit),
                     iconSize: 40.0,
-                    onPressed: () {},
+                    onPressed: () async {
+                      final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ProfileEditPage(contact: contact)));
+                      setState(() {
+                        contact = result;
+                      });
+                    },
                   ),
                   const SizedBox(
                     width: 10.0,
@@ -134,4 +189,37 @@ class _ProfilePageState extends State<ProfilePage> {
       ]),
     );
   }
+
+  Future<File> rotateAndCompressAndSaveImage(File image) async {
+    int rotate = 0;
+    List<int> imageBytes = await image.readAsBytes();
+    Map<String, IfdTag> exifData = await readExifFromBytes(imageBytes);
+
+    if (exifData != null &&
+        exifData.isNotEmpty &&
+        exifData.containsKey("Image Orientation")) {
+      IfdTag orientation = exifData["Image Orientation"];
+      int orientationValue = orientation.values[0];
+
+      if (orientationValue == 3) {
+        rotate = 180;
+      }
+
+      if (orientationValue == 6) {
+        rotate = -90;
+      }
+
+      if (orientationValue == 8) {
+        rotate = 90;
+      }
+    }
+
+    List<int> result = await FlutterImageCompress.compressWithList(imageBytes,
+        quality: 50, rotate: rotate);
+
+    image.writeAsBytesSync(result);
+
+    return image;
+  }
+
 }

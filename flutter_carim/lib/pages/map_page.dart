@@ -36,7 +36,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
           ),
           MarkerLayerOptions(
             markers: [
-              _createMarker(),
+              _createMarker(lt:51.5, lg: -0.09),
             ],
           ),
         ],
@@ -44,11 +44,11 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Marker _createMarker() {
+  Marker _createMarker({double lt, double lg}) {
     return Marker(
       width: 80.0,
       height: 80.0,
-      point: LatLng(51.5, -0.09),
+      point: LatLng(lt, lg),
       builder: (ctx) => Container(
         child: IconButton(
           icon: Icon(FontAwesomeIcons.mapMarkerAlt),

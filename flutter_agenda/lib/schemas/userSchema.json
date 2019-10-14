@@ -1,0 +1,97 @@
+ 1 {
+ 2   "definitions": {},
+ 3   "$schema": "http://json-schema.org/draft-07/schema#",
+ 4   "$id": "http://example.com/root.json",
+ 5   "type": "object",
+ 6   "title": "The Root Schema",
+ 7   "required": [
+ 8     "id",
+ 9     "userPhoto",
+10     "nome",
+11     "nomeCompleto",
+12     "email",
+13     "fone",
+14     "membroDesde",
+15     "codigoId"
+16   ],
+17   "properties": {
+18     "id": {
+19       "$id": "#/properties/id",
+20       "type": "string",
+21       "title": "The Id Schema",
+22       "default": "",
+23       "examples": [
+24         "string"
+25       ],
+26       "pattern": "^(.*)$"
+27     },
+28     "userPhoto": {
+29       "$id": "#/properties/userPhoto",
+30       "type": "string",
+31       "title": "The Userphoto Schema",
+32       "default": "",
+33       "examples": [
+34         "http..."
+35       ],
+36       "pattern": "^(.*)$"
+37     },
+38     "nome": {
+39       "$id": "#/properties/nome",
+40       "type": "string",
+41       "title": "The Nome Schema",
+42       "default": "",
+43       "examples": [
+44         "Daniel"
+45       ],
+46       "pattern": "^(.*)$"
+47     },
+48     "nomeCompleto": {
+49       "$id": "#/properties/nomeCompleto",
+50       "type": "string",
+51       "title": "The Nomecompleto Schema",
+52       "default": "",
+53       "examples": [
+54         "Daniel Gariani Rafael"
+55       ],
+56       "pattern": "^(.*)$"
+57     },
+58     "email": {
+59       "$id": "#/properties/email",
+60       "type": "string",
+61       "title": "The Email Schema",
+62       "default": "",
+63       "examples": [
+64         "danielgrafael@gmail.com"
+65       ],
+66       "pattern": "^(.*)$"
+67     },
+68     "fone": {
+69       "$id": "#/properties/fone",
+70       "type": "string",
+71       "title": "The Fone Schema",
+72       "default": "",
+73       "examples": [
+74         "48996180862"
+75       ],
+76       "pattern": "^(.*)$"
+77     },
+78     "membroDesde": {
+79       "$id": "#/properties/membroDesde",
+80       "type": "integer",
+81       "title": "The Membrodesde Schema",
+82       "default": 0,
+83       "examples": [
+84         2019
+85       ]
+86     },
+87     "codigoId": {
+88       "$id": "#/properties/codigoId",
+89       "type": "integer",
+90       "title": "The Codigoid Schema",
+91       "default": 0,
+92       "examples": [
+93         123123
+94       ]
+95     }
+96   }
+97 }

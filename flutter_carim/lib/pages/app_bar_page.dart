@@ -34,17 +34,17 @@ class _AppBarPageState extends State<AppBarPage>
     super.dispose();
   }
 
-  void _nextPage(int delta) {
-    final int newIndex = _tabController.index + delta;
-    if (newIndex < 0 || newIndex >= _tabController.length) return;
-    _tabController.animateTo(newIndex);
-  }
+//  void _nextPage(int delta) {
+//    final int newIndex = _tabController.index + delta;
+//    if (newIndex < 0 || newIndex >= _tabController.length) return;
+//    _tabController.animateTo(newIndex);
+//  }
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       titleSpacing: 10.0,
-      automaticallyImplyLeading: false,
+//      automaticallyImplyLeading: false,
       backgroundColor: Colors.green[900],
       actions: <Widget>[
         PopupMenuButton<CustomPopupMenu>(

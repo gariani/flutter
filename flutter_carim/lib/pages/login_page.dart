@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
                       Text(
                         'J U N T O U   T R O C O U',
                         style: TextStyle(fontSize: 10, color: Colors.red[900]),
-                      )
+                      ),
                     ],
                   ),
                 ),

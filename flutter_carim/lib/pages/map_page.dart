@@ -1,4 +1,3 @@
-import 'package:carimbinho/helpers/google_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
@@ -37,6 +36,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
+        heroTag: "map_page",
         child: Icon(Icons.refresh),
         onPressed: () {
           pointIndex++;
@@ -87,6 +87,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
                 borderStrokeWidth: 3),
             builder: (context, markers) {
               return FloatingActionButton(
+                heroTag: "map_page_layer",
                 child: Text(markers.length.toString()),
                 onPressed: null,
               );

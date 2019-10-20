@@ -14,7 +14,7 @@ class AppBarPage extends StatefulWidget with PreferredSizeWidget {
 
 class _AppBarPageState extends State<AppBarPage>
     with SingleTickerProviderStateMixin {
-  CustomPopupMenu _selectedChoices = choices[0];
+
   TabController _tabController;
 
   @override
@@ -34,17 +34,11 @@ class _AppBarPageState extends State<AppBarPage>
     super.dispose();
   }
 
-//  void _nextPage(int delta) {
-//    final int newIndex = _tabController.index + delta;
-//    if (newIndex < 0 || newIndex >= _tabController.length) return;
-//    _tabController.animateTo(newIndex);
-//  }
-
   @override
   Widget build(BuildContext context) {
     return AppBar(
       titleSpacing: 10.0,
-//      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.green[900],
       actions: <Widget>[
         PopupMenuButton<CustomPopupMenu>(
@@ -90,8 +84,7 @@ class _AppBarPageState extends State<AppBarPage>
   }
 
   void _select(CustomPopupMenu choice) {
-    print("teste");
-    _selectedChoices = choice;
+
     if (choice.event.contains("logout")) {
       google.logoff();
       Navigator.push(

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:carimbinho/pages/carimbo_page.dart';
 import 'package:exif/exif.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:carimbinho/core/models/contact.dart';
 import 'package:carimbinho/pages/profile_edit_page.dart';
@@ -32,19 +33,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      reverse: false,
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Container(
-              width: 150.0,
-              height: 175.0,
+            Flexible(
+              flex: 1,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   GestureDetector(
                       child: Container(
@@ -84,12 +81,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           });
                         });
                       }),
-                ],
-              ),
-            ),
-            Container(
-              child: Column(
-                children: <Widget>[
                   const SizedBox(
                     height: 20,
                   ),
@@ -132,71 +123,66 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(
                     height: 30,
                   ),
+                  QrCodePage(data: contact.email),
                 ],
               ),
             ),
-            QrCodePage(data: contact.email),
-            Expanded(
-                flex: 1,
-                child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      IconButton(
-                        padding: EdgeInsets.only(bottom: 10.0),
-                        icon: Icon(FontAwesomeIcons.stamp),
-                        iconSize: 40.0,
-                        onPressed: () {},
-                      ),
-                      const SizedBox(
-                        width: 50.0,
-                      ),
-                      IconButton(
-                        icon: Icon(FontAwesomeIcons.star),
-                        iconSize: 40.0,
-                        onPressed: () async {
-                          await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CarimboPage()));
-                        },
-                      ),
-                      const SizedBox(
-                        width: 50.0,
-                      ),
-                      IconButton(
-                        icon: Icon(FontAwesomeIcons.search),
-                        iconSize: 40.0,
-                        onPressed: () {},
-                      ),
-                      const SizedBox(
-                        width: 50.0,
-                      ),
-                      IconButton(
-                        icon: Icon(FontAwesomeIcons.userEdit),
-                        iconSize: 40.0,
-                        onPressed: () async {
-                          final result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ProfileEditPage(contact: contact)));
-                          setState(() {
-                            contact = result == null ? contact : result;
-                          });
-                        },
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                    ],
-                  ),
-                ))
-          ]),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                const SizedBox(
+                  width: 10.0,
+                ),
+                IconButton(
+                  padding: EdgeInsets.only(bottom: 10.0),
+                  icon: Icon(FontAwesomeIcons.stamp),
+                  iconSize: 40.0,
+                  onPressed: () {},
+                ),
+                const SizedBox(
+                  width: 50.0,
+                ),
+                IconButton(
+                  icon: Icon(FontAwesomeIcons.star),
+                  iconSize: 40.0,
+                  onPressed: () async {
+                    await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CarimboPage()));
+                  },
+                ),
+                const SizedBox(
+                  width: 50.0,
+                ),
+                IconButton(
+                  icon: Icon(FontAwesomeIcons.search),
+                  iconSize: 40.0,
+                  onPressed: () {},
+                ),
+                const SizedBox(
+                  width: 50.0,
+                ),
+                IconButton(
+                  icon: Icon(FontAwesomeIcons.userEdit),
+                  iconSize: 40.0,
+                  onPressed: () async {
+                    final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ProfileEditPage(contact: contact)));
+                    setState(() {
+                      contact = result == null ? contact : result;
+                    });
+                  },
+                ),
+                const SizedBox(
+                  width: 10.0,
+                ),
+              ],
+            ),
+          ],
+        ),
     );
   }
 

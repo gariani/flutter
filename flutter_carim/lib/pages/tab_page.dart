@@ -26,9 +26,9 @@ class _TabPageState extends State<TabPage> {
           body: TabBarView(
             physics: NeverScrollableScrollPhysics(),
             children: <Widget>[
-              ListPage(),
-              MapPage(),
-              ProfilePage(contact: widget.contact),
+                ListPage(),
+                MapPage(),
+                ProfilePage(contact: widget.contact),
             ],
           )),
     );

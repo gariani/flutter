@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/first_app/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/first_app/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_agenda/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_agenda/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_basic/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_basic/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_carim/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_carim/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_carimbinho/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_carimbinho/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_chat/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_chat/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_chuck_norris/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_chuck_norris/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_dolar/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_dolar/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_gif/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_gif/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_loja_virtual/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_loja_virtual/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_map/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_map/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_stamp/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_stamp/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_tasklist/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_tasklist/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_traveler/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_traveler/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

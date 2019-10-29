@@ -38,7 +38,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
   @override
   Widget build(BuildContext context) {
-
     final contactProvider = Provider.of<CRUDModel>(context);
 
     return Scaffold(
@@ -129,7 +128,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
   Future<Contact> _saveData(CRUDModel provider) async {
     google.googleLogin();
-    final contact =  Contact(
+    final contact = Contact(
         id: emailController.text,
         nome: nomeController.text,
         email: emailController.text,

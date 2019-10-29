@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "62971161556-efs4jm6k6884rugsmlag9hbesofiainm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.newidea.carimbinho",
+            "certificate_hash": "37294f16e0fe2da173a853b00fa343c1e5c1e0fb"
+          }
+        },
+        {
           "client_id": "62971161556-o0qbdskpsitrh4e0e3lqjtti0m94mklb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -38,6 +46,13 @@
             {
               "client_id": "62971161556-ctugr13erbp872gieml7dgnjbhes8c50.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "62971161556-nlcjikfjmco4mbalduhfsl9h6votik02.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.newidea.carimbinho"
+              }
             }
           ]
         }

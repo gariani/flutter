@@ -44,7 +44,7 @@ class _AppBarPageState extends State<AppBarPage>
         PopupMenuButton<CustomPopupMenu>(
             elevation: 3.2,
             initialValue: choices[0],
-            icon: Icon(Icons.menu),
+            icon: Icon(Icons.exit_to_app),
             tooltip: 'Configuração',
             onSelected: _select,
             itemBuilder: (BuildContext context) {
@@ -64,27 +64,10 @@ class _AppBarPageState extends State<AppBarPage>
               }).toList();
             }),
       ],
-      bottom: TabBar(
-        tabs: [
-          Tab(
-            icon: Icon(Icons.list),
-          ),
-          Tab(
-            icon: Icon(Icons.map),
-          ),
-          Tab(icon: Icon(Icons.settings)),
-        ],
-        labelColor: Colors.white,
-        unselectedLabelColor: Colors.grey,
-        indicatorPadding: EdgeInsets.all(10.0),
-        indicatorColor: Colors.white,
-        indicatorSize: TabBarIndicatorSize.tab,
-      ),
     );
   }
 
   void _select(CustomPopupMenu choice) {
-
     if (choice.event.contains("logout")) {
       google.logoff();
       Navigator.push(
@@ -95,7 +78,6 @@ class _AppBarPageState extends State<AppBarPage>
 
 class CustomPopupMenu {
   CustomPopupMenu({this.title, this.icon, this.event});
-
   String title;
   IconData icon;
   String event;

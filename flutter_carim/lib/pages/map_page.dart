@@ -6,11 +6,17 @@ import 'package:latlong/latlong.dart';
 import 'package:location/location.dart';
 
 class MapPage extends StatefulWidget {
+
+  final Widget teste;
+
+  MapPage({this.teste});
+
   @override
   _MapPageState createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
+
   List<Marker> markers;
   var locate = Location();
   double lt, lg;
@@ -34,27 +40,27 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
     super.build(context);
 
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        heroTag: "map_page",
-        child: Icon(Icons.refresh),
-        onPressed: () {
-          pointIndex++;
-          if (pointIndex >= points.length) {
-            pointIndex = 0;
-          }
-          setState(() {
-            markers[0] = Marker(
-              point: points[pointIndex],
-              anchorPos: AnchorPos.align(AnchorAlign.center),
-              height: 30,
-              width: 30,
-              builder: (ctx) => Icon(Icons.pin_drop),
-            );
-            markers = getMarkerList();
-          });
-        },
-      ),
+//      floatingActionButtonButtonLocation: FloatingActionButtonLocation.endTop,
+//      floatingActionButton: FloatingActionButton(
+//        heroTag: "map_page",
+//        child: Icon(Icons.refresh),
+//        onPressed: () {
+//          pointIndex++;
+//          if (pointIndex >= points.length) {
+//            pointIndex = 0;
+//          }
+//          setState(() {
+//            markers[0] = Marker(
+//              point: points[pointIndex],
+//              anchorPos: AnchorPos.align(AnchorAlign.center),
+//              height: 30,
+//              width: 30,
+//              builder: (ctx) => Icon(Icons.pin_drop),
+//            );
+//            markers = getMarkerList();
+//          });
+//        },
+//      ),
       body: FlutterMap(
         //mapController: mapController,
 //              mapController: mapController,

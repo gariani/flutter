@@ -21,81 +21,71 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: 40.0),
-        child: Stack(children: [
-          Container(
-            child: ListView(
-              children: <Widget>[
-                Center(          
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset('icon/stamp.jpg'),
-                      Text(
-                        'CARIMBINHO',
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontFamily: 'Oswald',
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'J U N T O U   T R O C O U',
-                        style: TextStyle(fontSize: 10, color: Colors.red[900]),
-                      ),
-                    ],
+        child: ListView(
+          children: <Widget>[
+            Center(
+              child: Column(
+                children: <Widget>[
+                  Image.asset('icon/stamp.jpg'),
+                  Text(
+                    'CARIMBINHO',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontFamily: 'Oswald',
+                        fontWeight: FontWeight.bold),
                   ),
-                ),
-                Center(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.symmetric(vertical: 20.0), 
-                        width: 305.0,
-                        child: Column(
-                          children: <Widget>[
-                            const SizedBox(
-                              height: 40,
-                            ),
-                            Text(
-                              'Fazer Login',
-                              style: TextStyle(
-                                color: Colors.grey[800],
-                                fontSize: 20.0,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            _loginButton('Conectar com o Google',
-                                Colors.red[800], LoginIcons.gplus),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            _loginButton('Conectar com o Facebook',
-                                Colors.blue[900], LoginIcons.facebook_squared),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            const Text(
-                              '- ou -',
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                              width: 20.0,
-                            ),
-                            _internalForm(),
-                          ],
+                  Text(
+                    'J U N T O U   T R O C O U',
+                    style: TextStyle(fontSize: 10, color: Colors.red[900]),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.symmetric(vertical: 20.0),
+                    width: 305.0,
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(
+                          height: 40,
                         ),
-                      )
-                    ],
+                        Text(
+                          'Fazer Login',
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                            fontSize: 20.0,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        _loginButton('Conectar com o Google', Colors.red[800],
+                            LoginIcons.gplus),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        _loginButton('Conectar com o Facebook',
+                            Colors.blue[900], LoginIcons.facebook_squared),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        const Text(
+                          '- ou -',
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                          width: 20.0,
+                        ),
+                        _internalForm(),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
@@ -184,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
               'Esqueci minha senha!',
               style: TextStyle(color: Colors.blue),
             ),
-          )
+          ),
         ],
       ),
     );

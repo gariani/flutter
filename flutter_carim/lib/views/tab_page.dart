@@ -1,26 +1,26 @@
 import 'package:carimbinho/core/models/contact.dart';
-import 'package:carimbinho/pages/list_page.dart';
-import 'package:carimbinho/pages/profile_page.dart';
+import 'package:carimbinho/core/services/authentication_service.dart';
+import 'package:carimbinho/core/viewmodels/base_login.dart';
+import 'package:carimbinho/core/viewmodels/google_login_model.dart';
+import 'package:carimbinho/helpers/locator.dart';
+import 'package:carimbinho/views/list_page.dart';
+import 'package:carimbinho/views/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'app_bar_page.dart';
+import 'package:provider/provider.dart';
 import 'map_page.dart';
 
 class TabPage extends StatefulWidget {
-  final Contact contact;
-
-  TabPage({this.contact});
-
   @override
   _TabPageState createState() => _TabPageState();
 }
 
 class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
+
+  AuthenticationService _auth = locator<AuthenticationService>();
+
   Widget teste;
   TabController _tabController;
-  Contact _contact;
-  bool _dialVisible = true;
-
   List<Widget> myTabs;
 
   bool _isOpened = false;
@@ -31,16 +31,14 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
   Curve _curve = Curves.easeOut;
   double _fabHeight = 56.0;
   bool _shouldHaveElevation = false;
-  Animation<Color> _animateColor;
 
   @override
   void initState() {
-    _contact = widget.contact;
 
     myTabs = <Widget>[
       ListPage(),
-      MapPage(teste: teste),
-      ProfilePage(contact: _contact),
+      MapPage(),
+      ProfilePage(),
     ];
 
     _tabController = TabController(length: myTabs.length, vsync: this);
@@ -64,7 +62,6 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
       ),
     ));
 
-    // this does the translation of menu items
     _translateButton = Tween<double>(
       begin: _fabHeight,
       end: -14.0,
@@ -117,6 +114,7 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
         onPressed: () {
           _tabController.animateTo(1);
           animate();
+          googleSignIn.signOut();
         },
         tooltip: 'Mapa',
         heroTag: 'mapa',
@@ -136,6 +134,21 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
         tooltip: 'Profile',
         heroTag: 'profile',
         child: Icon(Icons.person),
+        elevation: _shouldHaveElevation ? 6.0 : 0,
+      ),
+    );
+  }
+
+  Widget exitButton() {
+    return Container(
+      child: FloatingActionButton(
+        onPressed: () {
+          _auth.logoff();
+          Navigator.pop(context);
+        },
+        tooltip: 'Exit',
+        heroTag: 'Exit',
+        child: Icon(Icons.exit_to_app),
         elevation: _shouldHaveElevation ? 6.0 : 0,
       ),
     );
@@ -193,7 +206,7 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
       Transform(
         transform: Matrix4.translationValues(
           0.0,
-          _translateButton.value * 3.0,
+          _translateButton.value * 4.0,
           0.0,
         ),
         child: listButton(),
@@ -201,7 +214,7 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
       Transform(
         transform: Matrix4.translationValues(
           0.0,
-          _translateButton.value * 2.0,
+          _translateButton.value * 3.0,
           0.0,
         ),
         child: mapButton(),
@@ -209,10 +222,18 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
       Transform(
         transform: Matrix4.translationValues(
           0.0,
-          _translateButton.value,
+          _translateButton.value * 2.0,
           0.0,
         ),
         child: profileButton(),
+      ),
+      Transform(
+        transform: Matrix4.translationValues(
+          0.0,
+          _translateButton.value,
+          0.0,
+        ),
+        child: exitButton(),
       ),
       expandedButton(),
       SizedBox(
@@ -227,8 +248,24 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
       length: myTabs.length,
       initialIndex: 0,
       child: Scaffold(
-        appBar: AppBarPage(),
-        body: _tabs(),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(0.0),
+          child: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0.0,
+          ),
+        ),
+        body: Stack(
+          children: <Widget>[
+            Positioned(
+              top: 0.0,
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: _tabs(),
+            ),
+          ],
+        ),
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: _createSpecificFloatingButtons(),

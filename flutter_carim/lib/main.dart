@@ -1,19 +1,15 @@
-import 'package:carimbinho/core/viewmodels/CRUDModel.dart';
 import 'package:carimbinho/helpers/locator.dart';
-import 'package:carimbinho/pages/route.dart';
+import 'package:carimbinho/views/route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'helpers/google_login.dart';
-import 'pages/route.dart' as router;
+import 'provider_setup.dart';
+import 'views/route.dart' as router;
 
 String route;
 
 void main() async {
-  await googleSignIn.signOut();
-
-  bool result = await googleSignIn.isSignedIn();
-  route = result ? TabPageRoute : LoginPageRoute;
-
+  Provider.debugCheckInvalidValueType = null;
+  route = LoginPageRoute;
   setupLocator();
   runApp(MainApp());
 }
@@ -21,11 +17,13 @@ void main() async {
 class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
-      providers: [ChangeNotifierProvider(builder: (_) => locator<CRUDModel>())],
+      providers: providers,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: Colors.green[900],
+        ),
         initialRoute: route,
         onGenerateRoute: router.generateRoute,
       ),

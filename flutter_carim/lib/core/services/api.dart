@@ -20,7 +20,7 @@ class Api {
     return ref.snapshots();
   }
 
-  Future<DocumentSnapshot> getDocumentoById(String id) {
+  Future<DocumentSnapshot> getDocumentById(String id) {
     return ref.document(id).get();
   }
 
@@ -30,7 +30,7 @@ class Api {
 
   Future<DocumentSnapshot> addDocument(String id, Map data) async {
     await ref.document(id).setData(data);
-    return getDocumentoById(id);
+    return getDocumentById(id);
   }
 
   Future<void> updateDocument(Map data, String id) {

@@ -1,5 +1,5 @@
-import 'package:carimbinho/pages/login_page.dart';
-import 'package:carimbinho/pages/tab_page.dart';
+import 'package:carimbinho/views/login_page.dart';
+import 'package:carimbinho/views/tab_page.dart';
 import 'package:flutter/material.dart';
 
 const String HomePageRoute = '/';

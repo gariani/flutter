@@ -7,10 +7,6 @@ import 'package:location/location.dart';
 
 class MapPage extends StatefulWidget {
 
-  final Widget teste;
-
-  MapPage({this.teste});
-
   @override
   _MapPageState createState() => _MapPageState();
 }
@@ -40,30 +36,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
     super.build(context);
 
     return Scaffold(
-//      floatingActionButtonButtonLocation: FloatingActionButtonLocation.endTop,
-//      floatingActionButton: FloatingActionButton(
-//        heroTag: "map_page",
-//        child: Icon(Icons.refresh),
-//        onPressed: () {
-//          pointIndex++;
-//          if (pointIndex >= points.length) {
-//            pointIndex = 0;
-//          }
-//          setState(() {
-//            markers[0] = Marker(
-//              point: points[pointIndex],
-//              anchorPos: AnchorPos.align(AnchorAlign.center),
-//              height: 30,
-//              width: 30,
-//              builder: (ctx) => Icon(Icons.pin_drop),
-//            );
-//            markers = getMarkerList();
-//          });
-//        },
-//      ),
       body: FlutterMap(
-        //mapController: mapController,
-//              mapController: mapController,
         options: MapOptions(
           plugins: [MarkerClusterPlugin()],
           center: LatLng(-27.597426, -48.572474),

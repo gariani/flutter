@@ -1,6 +1,5 @@
 import 'package:carimbinho/core/models/contact.dart';
 import 'package:carimbinho/core/viewmodels/CRUDModel.dart';
-import 'package:carimbinho/helpers/google_login.dart' as google;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -127,7 +126,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   }
 
   Future<Contact> _saveData(CRUDModel provider) async {
-    google.googleLogin();
     final contact = Contact(
         id: emailController.text,
         nome: nomeController.text,

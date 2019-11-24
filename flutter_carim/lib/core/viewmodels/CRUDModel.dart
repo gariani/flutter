@@ -23,7 +23,7 @@ class CRUDModel extends ChangeNotifier {
   }
 
     Future<Contact> getContactById(String id) async {
-    var doc = await _api.getDocumentoById(id);
+    var doc = await _api.getDocumentById(id);
     if (doc.data == null) return null;
     return Contact.fromMap(doc.data, doc.documentID);
   }
@@ -38,8 +38,9 @@ class CRUDModel extends ChangeNotifier {
     return;
   }
 
-  Future<DocumentSnapshot> addContact(String id, Contact data) async {
-    return await _api.addDocument(id, data.toJson());
+  Future<Contact> addContact(String id, Contact data) async {
+    var result = await _api.addDocument(id, data.toJson());
+    return Contact(email: result.data['email']);
   }
  
 }

@@ -40,6 +40,7 @@ android {
     defaultConfig {
         applicationId "com.newidea.carimbinho"
         minSdkVersion 23
+        buildToolsVersion "28.0.2"
         targetSdkVersion 28
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()

@@ -143,8 +143,9 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
     return Container(
       child: FloatingActionButton(
         onPressed: () {
-          _auth.logoff();
-          Navigator.pop(context);
+          _auth.logoff().then((value){
+            Navigator.pop(context);
+          });
         },
         tooltip: 'Exit',
         heroTag: 'Exit',

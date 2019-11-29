@@ -38,11 +38,12 @@ class GoogleLoginModel extends BaseModel implements BaseLogin {
 
     var foundUser = await authenticationService.getContactById(user.email);
 
-    if (foundUser == null) {
+    if ((foundUser == null) || (!foundUser)) {
       Contact contact = new Contact(
           email: user.email,
           nome: _googleUser.displayName,
-          foto: _googleUser.photoUrl);
+          foto: _googleUser.photoUrl,
+          membroDesde: DateTime.now().year.toString());
       bool added = await authenticationService.addContact(user.email, contact);
       if (!added) {
         throw Exception('error to add a new user');

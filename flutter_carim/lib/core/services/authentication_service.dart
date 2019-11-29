@@ -3,14 +3,14 @@ import 'dart:core';
 
 import 'package:carimbinho/core/models/contact.dart';
 import 'package:carimbinho/core/viewmodels/CRUDModel.dart';
+import 'package:carimbinho/core/viewmodels/google_login_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import '../../helpers/locator.dart';
 
 import 'api.dart';
 
-class AuthenticationService{
-
+class AuthenticationService {
   final CRUDModel _crud;
 
   AuthenticationService({CRUDModel crud}) : _crud = crud;
@@ -21,19 +21,19 @@ class AuthenticationService{
 
   @protected
   @mustCallSuper
-  void dispose(){
+  void dispose() {
     _userController.close();
   }
 
   Future<bool> getContactById(String contactId) async {
     var contact = await _crud.getContactById(contactId);
     var hasUser = contact != null;
-    if(hasUser) {
+    if (hasUser) {
       _userController.add(contact);
     }
     return hasUser;
   }
-  
+
   Future<bool> addContact(String id, Contact data) async {
     await _crud.addContact(id, data);
     _userController.add(data);
@@ -41,7 +41,10 @@ class AuthenticationService{
   }
 
   Future<void> logoff() async {
-    await FirebaseAuth.instance.signOut();
-
+    var isLogged = await googleSignIn.isSignedIn();
+    if (isLogged) {
+      await FirebaseAuth.instance.signOut();
+      await googleSignIn.signOut();
+    }
   }
 }

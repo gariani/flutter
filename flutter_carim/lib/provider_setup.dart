@@ -1,4 +1,4 @@
-import 'package:carimbinho/core/viewmodels/CRUDModel.dart';
+import 'package:carimbinho/core/viewmodels/ContactCrud.dart';
 import 'package:provider/provider.dart';
 import 'package:carimbinho/core/services/authentication_service.dart';
 
@@ -11,11 +11,11 @@ List<SingleChildCloneableWidget> providers = [
 ];
 
 List<SingleChildCloneableWidget> independetServices = [
-  Provider.value(value: CRUDModel())
+  Provider.value(value: ContactCrud())
 ];
 
 List<SingleChildCloneableWidget> dependentServices = [
-  ProxyProvider<CRUDModel, AuthenticationService>(
+  ProxyProvider<ContactCrud, AuthenticationService>(
     builder: (context, crud, authenticationService) =>
         AuthenticationService(crud: crud),
   )

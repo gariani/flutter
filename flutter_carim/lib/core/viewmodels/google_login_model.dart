@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:carimbinho/core/enum/viewstate.dart';
 import 'package:carimbinho/core/models/contact.dart';
 import 'package:carimbinho/core/services/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +14,7 @@ FirebaseUser user;
 
 class GoogleLoginModel extends BaseModel implements BaseLogin {
   final AuthenticationService authenticationService;
+  Contact contact;
 
   GoogleLoginModel({this.authenticationService});
 
@@ -39,16 +41,20 @@ class GoogleLoginModel extends BaseModel implements BaseLogin {
     var foundUser = await authenticationService.getContactById(user.email);
 
     if ((foundUser == null) || (!foundUser)) {
-      Contact contact = new Contact(
+      contact = new Contact(
           email: user.email,
           nome: _googleUser.displayName,
+          fone: user.phoneNumber,
           foto: _googleUser.photoUrl,
-          membroDesde: DateTime.now().year.toString());
+          membroDesde: DateTime.now().year.toString(),
+          type: ContactType.undefined);
       bool added = await authenticationService.addContact(user.email, contact);
       if (!added) {
         throw Exception('error to add a new user');
       }
     }
+
+    authenticationService.loggedWith = LoggedWith.google;
 
     return googleSignIn.isSignedIn();
   }

@@ -1,14 +1,15 @@
+import 'package:carimbinho/core/enum/viewstate.dart';
 import 'package:carimbinho/core/models/contact.dart';
 import 'package:carimbinho/core/services/authentication_service.dart';
 import 'package:carimbinho/core/viewmodels/base_login.dart';
 import 'package:carimbinho/core/viewmodels/google_login_model.dart';
 import 'package:carimbinho/helpers/locator.dart';
-import 'package:carimbinho/views/list_page.dart';
-import 'package:carimbinho/views/profile_page.dart';
+import 'package:carimbinho/views/list/list_page.dart';
+import 'package:carimbinho/views/profiles/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'map_page.dart';
+import 'map/map_page.dart';
 
 class TabPage extends StatefulWidget {
   @override
@@ -17,9 +18,8 @@ class TabPage extends StatefulWidget {
 
 class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
 
-  AuthenticationService _auth = locator<AuthenticationService>();
+  AuthenticationService _auth;
 
-  Widget teste;
   TabController _tabController;
   List<Widget> myTabs;
 
@@ -197,8 +197,6 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
 
   List<Widget> _createFloatingButtons2() {
     var newList = _createFloatingButtons();
-    teste = menuButton2();
-    newList.add(teste);
     return newList;
   }
 
@@ -245,6 +243,9 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
+    _auth = Provider.of<AuthenticationService>(context);
+
     return DefaultTabController(
       length: myTabs.length,
       initialIndex: 0,

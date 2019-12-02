@@ -1,6 +1,6 @@
 import 'package:carimbinho/core/models/contact.dart';
 import 'package:carimbinho/core/services/authentication_service.dart';
-import 'package:carimbinho/core/viewmodels/CRUDModel.dart';
+import 'package:carimbinho/core/viewmodels/ContactCrud.dart';
 import 'package:carimbinho/core/viewmodels/email_login_model.dart';
 import 'package:carimbinho/core/viewmodels/facebook_login_model.dart';
 import 'package:carimbinho/core/viewmodels/google_login_model.dart';
@@ -11,7 +11,7 @@ GetIt locator = GetIt.instance;
 
 void setupLocator(){
   locator.registerLazySingleton(() => Api('contacts'));
-  locator.registerLazySingleton(() => CRUDModel());
+  locator.registerLazySingleton(() => ContactCrud());
   locator.registerLazySingleton(() => AuthenticationService());
   locator.registerLazySingleton(() => Contact());
 

@@ -1,5 +1,4 @@
-import 'package:carimbinho/core/services/authentication_service.dart';
-import 'package:carimbinho/views/profile_edit_page.dart';
+import 'package:carimbinho/views/profiles/profile_edit_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:carimbinho/core/models/contact.dart';
 import 'package:carimbinho/views/qr_code_page.dart';
@@ -13,13 +12,30 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+  bool _hasChanged = false;
+
+  final fotoController = TextEditingController();
+  final nomeController = TextEditingController();
+  final emailController = TextEditingController();
+  final foneController = TextEditingController();
+  final membroDesdeController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
   void dispose() {
+
+    fotoController.dispose();
+    nomeController.dispose();
+    emailController.dispose();
+    foneController.dispose();
+    membroDesdeController.dispose();
+
     super.dispose();
   }
 
@@ -30,6 +46,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    if (!_hasChanged) {
+      fotoController.text = Provider.of<Contact>(context).foto ?? "";
+      nomeController.text = Provider.of<Contact>(context).nome ?? "";
+      emailController.text = Provider.of<Contact>(context).email ?? "";
+      foneController.text = Provider.of<Contact>(context).fone ?? "";
+      membroDesdeController.text = Provider.of<Contact>(context).membroDesde ?? "";
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       reverse: false,
@@ -72,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 10,
               ),
               Text(
-                'Membro desde ',
+                'Membro desde ${Provider.of<Contact>(context).membroDesde}',
                 style: TextStyle(color: Colors.green[900]),
               ),
               const SizedBox(
@@ -89,17 +114,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 10,
               ),
               Text(
-                Provider.of<Contact>(context).fone,
+                foneController.text,
                 style: TextStyle(fontSize: 15.0, color: Colors.green[900]),
               ),
               const SizedBox(
-                height: 30,
+                height: 30.0,
               ),
               QrCodePage(data: Provider.of<Contact>(context).email),
+              const SizedBox(
+                height: 15.0,
+              ),
               InkWell(
                 child: Text('editar', style: TextStyle(color: Colors.lightBlueAccent),),
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEditPage()));
+                onTap: () {
+                  _gettingProfileUpdated(context);
                 },
               ),
             ],
@@ -107,5 +135,13 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
     );
+  }
+
+  Future<void> _gettingProfileUpdated(BuildContext context) async {
+    _hasChanged = true;
+    Contact result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfileEditPage()));
+    setState(() {
+      foneController.text = result.fone;
+    });
   }
 }

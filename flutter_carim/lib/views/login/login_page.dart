@@ -1,6 +1,4 @@
-import 'package:carimbinho/core/viewmodels/email_login_model.dart';
-import 'package:carimbinho/views/base_widget.dart';
-import 'package:carimbinho/views/login_oauth_page.dart';
+import 'package:carimbinho/views/login/login_oauth_page.dart';
 import 'package:flutter/material.dart';
 import 'login_form_page.dart';
 

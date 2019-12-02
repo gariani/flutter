@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:carimbinho/core/models/contact.dart';
-import 'package:carimbinho/core/viewmodels/CRUDModel.dart';
+import 'package:carimbinho/core/viewmodels/ContactCrud.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
@@ -14,13 +14,13 @@ class CarimboPage extends StatefulWidget {
 
 class _CarimboPageState extends State<CarimboPage> {
   String barcode;
-  CRUDModel contactProvider;
+  ContactCrud contactProvider;
   Contact contact;
   final globalKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    contactProvider = Provider.of<CRUDModel>(context);
+    contactProvider = Provider.of<ContactCrud>(context);
 
     return Scaffold(
       key: globalKey,

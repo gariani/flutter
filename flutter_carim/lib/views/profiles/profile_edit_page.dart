@@ -1,13 +1,10 @@
 import 'package:carimbinho/core/models/contact.dart';
-import 'package:carimbinho/core/viewmodels/CRUDModel.dart';
+import 'package:carimbinho/core/viewmodels/ContactCrud.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ProfileEditPage extends StatefulWidget {
-  final Contact contact;
-
-  ProfileEditPage({@required this.contact});
 
   @override
   _ProfileEditPageState createState() => _ProfileEditPageState();
@@ -16,28 +13,35 @@ class ProfileEditPage extends StatefulWidget {
 class _ProfileEditPageState extends State<ProfileEditPage> {
   final fotoController = TextEditingController();
   final nomeController = TextEditingController();
-  final sobrenomeController = TextEditingController();
   final emailController = TextEditingController();
   final foneController = TextEditingController();
   final membroDesdeController = TextEditingController();
-  final codigoIdController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+  }
 
-    fotoController.text = widget.contact.foto ?? "";
-    nomeController.text = widget.contact.nome ?? "";
-    sobrenomeController.text = widget.contact.sobrenome ?? "";
-    emailController.text = widget.contact.email ?? "";
-    foneController.text = widget.contact.fone ?? "";
-    membroDesdeController.text = widget.contact.membroDesde ?? "";
-    codigoIdController.text = widget.contact.codigoId ?? "";
+  @override
+  void dispose(){
+    fotoController.dispose();
+    nomeController.dispose();
+    emailController.dispose();
+    foneController.dispose();
+    membroDesdeController.dispose();
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final contactProvider = Provider.of<CRUDModel>(context);
+    final contactProvider = Provider.of<ContactCrud>(context);
+
+    fotoController.text = Provider.of<Contact>(context).foto ?? "";
+    nomeController.text = Provider.of<Contact>(context).nome ?? "";
+    emailController.text = Provider.of<Contact>(context).email ?? "";
+    foneController.text = Provider.of<Contact>(context).fone ?? "";
+    membroDesdeController.text = Provider.of<Contact>(context).membroDesde ?? "";
 
     return Scaffold(
       appBar: AppBar(
@@ -50,7 +54,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.pop(context, widget.contact);
+            Navigator.pop(context);
           },
         ),
       ),
@@ -113,7 +117,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     ],
                   ),
                   onPressed: () async {
-                    var result = await _saveData(contactProvider);
+                    final result = await _saveData(contactProvider);
                     Navigator.pop(context, result);
                   },
                 ),
@@ -125,17 +129,15 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     );
   }
 
-  Future<Contact> _saveData(CRUDModel provider) async {
+  Future<Contact> _saveData(ContactCrud provider) async {
     final contact = Contact(
-        id: emailController.text,
         nome: nomeController.text,
         email: emailController.text,
         foto: fotoController.text,
         fone: foneController.text,
-        membroDesde: membroDesdeController.text,
-        codigoId: codigoIdController.text);
+        membroDesde: membroDesdeController.text);
 
-    await provider.updateContact(contact, contact.id);
+    await provider.updateContact(contact, emailController.text);
     return contact;
   }
 }

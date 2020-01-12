@@ -41,7 +41,7 @@ class _MyFlutterMapState extends State<MyFlutterMap> {
                 "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
             additionalOptions: {
               'accessToken':
-                  'pk.eyJ1IjoiZ2FyaWFuaSIsImEiOiJjazAxbzFxdG4wMDY3M25sc2RsYWU5c2o0In0.a6EUXyZdDKbqFDgPgX20Uw',
+                  '**',
               'id': 'mapbox.streets',
             },
           ),
